@@ -104,7 +104,7 @@ public class OssTemplateImpl implements OssTemplate {
      * 获取对象的url
      * @param bucketName
      * @param objectName
-     * @param expires
+     * @param expires  过期时间，不能超过七天
      * @return
      * AmazonS3：https://docs.aws.amazon.com/AmazonS3/latest/API/API_GeneratePresignedUrl.html
      */
