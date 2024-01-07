@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @Date 2024/01/01 17:51
  **/
 @Data
-@ConfigurationProperties(prefix = "oss")
+@ConfigurationProperties(prefix = "ali.oss")
 public class OssProperties {
     /**
      * 对象存储服务的URL

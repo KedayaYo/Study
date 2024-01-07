@@ -15,7 +15,7 @@
     <description>oss-spring-boot-starter</description>
     <properties>
         <java.version>17</java.version>
-        <aws.version>1.12.423</aws.version>
+        <aws.version>1.12.632</aws.version>
         <hutool.version>5.8.5</hutool.version>
     </properties>
     <dependencies>
