@@ -1,32 +1,75 @@
 server:
   port: 8020
+mybatis-plus:
+  #  mapper-locations: classpath*:mapper/**/*.xml
+  mapper-locations: classpath*:com/tth/service/**/*.xml
+  type-aliases-package: com.tth.service.model
+  configuration:
+    # 是否开启自动驼峰命名规则映射:从数据库列名到Java属性驼峰命名的类似映射
+    map-underscore-to-camel-case: true
+    # 如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段
+    call-setters-on-nulls: true
+    # MyBatis 自动映射策略
+    # NONE：不启用 PARTIAL：只对非嵌套 resultMap 自动映射 FULL：对所有 resultMap 自动映射
+    autoMappingBehavior: PARTIAL
+    # MyBatis 自动映射时未知列或未知属性处理策
+    # NONE：不做处理 WARNING：打印相关警告 FAILING：抛出异常和详细信息
+    autoMappingUnknownColumnBehavior: NONE
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 关闭控制台打印日志
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+    default-fetch-size: 100
+    default-statement-timeout: 3000
 jetcache:
-  # ?????0?????????????????????
+  # 统计间隔，0表示不统计，开启后定期在控制台输出缓存信息
   statIntervalMinutes: 15
-  # ???cacheName??????key??
+  # 是否把cacheName作为远程缓存key前缀
   areaInCacheName: false
-  # ??????
+  # 本地缓存配置
   local:
-    default: # default??????????????cacheName
-      # ????????????caffeine/linkedhashmap
+    default: # default表示全部生效，也可以指定某个cacheName
+      # 本地缓存类型，其他可选：caffeine/linkedhashmap
       type: linkedhashmap
       keyConvertor: fastjson
-  # ??????
+  # 远程缓存配置
   remote:
-    default: # default??????????????cacheName
+    default: # default表示全部生效，也可以指定某个cacheName
       type: redis
-      # key?????n
+      # key转换器方式n
       keyConvertor: fastjson
       broadcastChannel: projectA
-      # redis?????
+      # redis序列化方式
       valueEncoder: java
       valueDecoder: java
-      # redis???
+      # redis线程池
       poolConfig:
         minIdle: 5
         maxIdle: 20
         maxTotal: 50
-      # redis?????
-      host: test.sksys.cn
+      # redis地址与端口
+      host: 118.25.27.160
       port: 6379
+      password: tth2023
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  aop:
+    auto: true
+  datasource:
+    master:
+      jdbc-url: jdbc:p6spy:mysql://118.25.27.160:33306/ry-vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true
+      username: root
+      password: root
+      driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+      queryTimeout: 30000
+    slave1:
+      lazy: true
+      jdbc-url: jdbc:p6spy:mysql://118.25.27.160:33306/ry-vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true
+      username: root
+      password: root
+      driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+      queryTimeout: 30000
+    freemarker:
+    prefer-file-system-access: false
 

@@ -17,6 +17,7 @@ public class JetcacheConfig {
     @Autowired
     private CacheManager cacheManager;
     private Cache<Long, Object> userCache;
+    private Cache<String, Object> jetCache;
 
     @PostConstruct
     public void init(){
@@ -27,10 +28,16 @@ public class JetcacheConfig {
                 .syncLocal(false)
                 .build();
         userCache = cacheManager.getOrCreateCache(qc);
+        jetCache = cacheManager.getOrCreateCache(qc);
     }
 
     @Bean
     public Cache<Long, Object> getUserCache(){
         return userCache;
+    }
+
+    @Bean
+    public Cache<String, Object> getJetCache(){
+        return jetCache;
     }
 }
