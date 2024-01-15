@@ -30,11 +30,11 @@ public class UserController {
         if (jetCache.get(key) != null) {
             return (SysUser) jetCache.get(key);
         }
-        // LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<SysUser>()
-        //         .eq(SysUser::getDelFlag, 0)
-        //         .eq(SysUser::getUserId, userId);
-        // SysUser user = sysUserService.getOne(wrapper);
-        SysUser user = sysUserService.getById(userId);
+        LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<SysUser>()
+                .eq(SysUser::getDelFlag, 0)
+                .eq(SysUser::getUserId, userId);
+        SysUser user = sysUserService.getOne(wrapper);
+        // SysUser user = sysUserService.getById(userId);
         jetCache.put(key, user, 10, TimeUnit.MINUTES);
         System.out.println("第一次获取数据，未走缓存：" + key + "：" + user);
         return user;
