@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class JetcacheServiceApplication {
+public class mainServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(JetcacheServiceApplication.class, args);
+        SpringApplication.run(mainServiceApplication.class, args);
     }
 
 }

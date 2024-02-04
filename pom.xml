@@ -11,11 +11,42 @@
     <groupId>com.tth</groupId>
     <artifactId>service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>jetcacheService</name>
+    <name>mainService</name>
     <description>jetcacheService</description>
     <properties>
         <java.version>17</java.version>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <!-- 环境标识，需要与配置文件的名称相对应 -->
+                <profiles.active>local</profiles.active>
+                <logging.level>info</logging.level>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <!-- 环境标识，需要与配置文件的名称相对应 -->
+                <profiles.active>dev</profiles.active>
+                <logging.level>info</logging.level>
+            </properties>
+            <activation>
+                <!-- 默认环境 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profiles.active>prod</profiles.active>
+                <logging.level>warn</logging.level>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -31,6 +62,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
 
