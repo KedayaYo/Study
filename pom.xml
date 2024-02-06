@@ -15,6 +15,10 @@
     <description>jetcacheService</description>
     <properties>
         <java.version>17</java.version>
+        <!--hutool-->
+        <hutool.version>5.8.20</hutool.version>
+        <!--fastjson-->
+        <fastjson.version>2.0.25</fastjson.version>
     </properties>
 
     <profiles>
@@ -66,6 +70,26 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- mqtt -->
+        <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-mqtt</artifactId>
+        </dependency>
+
+        <!-- hutool 的依赖配置-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+
+        <!--fastjson-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
     </dependencies>
 

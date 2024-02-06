@@ -1,2 +1,5 @@
 server:
   port: 8020
+mqtt:
+  endpoint: tcp://broker.emqx.io
+  port: 1883

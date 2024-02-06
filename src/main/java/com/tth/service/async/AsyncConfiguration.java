@@ -17,9 +17,15 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 @EnableAsync
 public class AsyncConfiguration {
+
+    public static final String ASYNC_THEAD_POOL_1 = "asyncTheadPool1";
+    public static final String ASYNC_THEAD_POOL_2 = "asyncTheadPool2";
+    public static final String ASYNC_EXECUTOR_1 = "async-executor-1-";
+    public static final String ASYNC_EXECUTOR_2 = "async-executor-2-";
+
     // 自定义线程池
-    @Bean("asyncTheadPool")
-    public Executor asyncTheadPool(){
+    @Bean(ASYNC_THEAD_POOL_1)
+    public Executor asyncTheadPool1(){
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         // 核心线程数，线程池创建的时候初始化的线程数
         executor.setCorePoolSize(10);
@@ -30,7 +36,30 @@ public class AsyncConfiguration {
         // 允许的空闲时间60s，当超过了核心线程之外的线程在空闲时间到达之后会被销毁
         executor.setKeepAliveSeconds(60);
         // 线程名称前缀，方便我们定位处理任务所在的线程池
-        executor.setThreadNamePrefix("nc-thead-pool-");
+        executor.setThreadNamePrefix(ASYNC_EXECUTOR_1);
+        // 用来设置线程池关闭的时候等待所有任务都完成再继续销毁其他的Bean，这样这些异步任务的销毁就会先于Redis线程池的销毁。
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        // 该方法用来设置线程池中任务的等待时间，如果超过这个时候还没有销毁就强制销毁，以确保应用最后能够被关闭，而不是阻塞住。
+        executor.setAwaitTerminationSeconds(60);
+        // 设置拒绝策略，当线程池满了之后，依然有任务到来的处理策略
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
+        executor.initialize();
+        return executor;
+    }
+
+    @Bean(ASYNC_THEAD_POOL_2)
+    public Executor asyncTheadPool2(){
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        // 核心线程数，线程池创建的时候初始化的线程数
+        executor.setCorePoolSize(10);
+        // 最大线程数，线程池最大的线程数，只有在缓冲队列满了之后才会申请超过核心线程数的线程
+        executor.setMaxPoolSize(20);
+        // 缓冲队列，用来缓冲执行任务的队列
+        executor.setQueueCapacity(200);
+        // 允许的空闲时间60s，当超过了核心线程之外的线程在空闲时间到达之后会被销毁
+        executor.setKeepAliveSeconds(60);
+        // 线程名称前缀，方便我们定位处理任务所在的线程池
+        executor.setThreadNamePrefix(ASYNC_EXECUTOR_2);
         // 用来设置线程池关闭的时候等待所有任务都完成再继续销毁其他的Bean，这样这些异步任务的销毁就会先于Redis线程池的销毁。
         executor.setWaitForTasksToCompleteOnShutdown(true);
         // 该方法用来设置线程池中任务的等待时间，如果超过这个时候还没有销毁就强制销毁，以确保应用最后能够被关闭，而不是阻塞住。
