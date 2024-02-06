@@ -28,7 +28,11 @@ public class UserController {
     public SysUser get(@RequestParam("userId") Long userId) {
         String key = "USER_" + userId;
         if (jetCache.get(key) != null) {
-            return (SysUser) jetCache.get(key);
+            if (jetCache.get(key) instanceof SysUser) {
+                return (SysUser) jetCache.get(key);
+            } else {
+                return null;
+            }
         }
         LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<SysUser>()
                 .eq(SysUser::getDelFlag, 0)

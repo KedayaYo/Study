@@ -26,22 +26,26 @@ jetcache:
   statIntervalMinutes: 15
   # 是否把cacheName作为远程缓存key前缀
   areaInCacheName: false
+  penetrationProtect: false
+  enableMethodCache: true
   # 本地缓存配置
   local:
     default: # default表示全部生效，也可以指定某个cacheName
       # 本地缓存类型，其他可选：caffeine/linkedhashmap
       type: linkedhashmap
-      keyConvertor: fastjson
+      keyConvertor: fastjson # 支持的类型：fastjson，可自定义转换器函数
   # 远程缓存配置
   remote:
     default: # default表示全部生效，也可以指定某个cacheName
-      type: redis
+      type: redis # 支持的类型：redis、redis.lettuce
+      keyPrefix: 'skysys' # 系统简称:所属名字
       # key转换器方式n
       keyConvertor: fastjson
       broadcastChannel: projectA
       # redis序列化方式
-      valueEncoder: java
-      valueDecoder: java
+      valueEncoder: java # 支持的类型：kryo、java，可自定义编码器
+      valueDecoder: java # 支持的类型：kryo、java，可自定义解码器
+      expireAfterWriteInMillis: 3600000
       # redis线程池
       poolConfig:
         minIdle: 5
@@ -51,6 +55,11 @@ jetcache:
       host: 118.25.27.160
       port: 6379
       password: tth2023
+      timeout: 2000 # 连接的超时时间，读取数据的超时时间
+      database: 0 # 连接的数据库
+      #clientName: null # 客户端名称
+      #ssl: 是否使用SSL
+    # 其他模式 https://www.cnblogs.com/lifullmoon/p/13854158.html
 spring:
   main:
     allow-bean-definition-overriding: true
