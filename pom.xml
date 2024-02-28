@@ -19,6 +19,8 @@
         <hutool.version>5.8.20</hutool.version>
         <!--fastjson-->
         <fastjson.version>2.0.25</fastjson.version>
+        <!--commons-net-->
+        <commons-net.version>3.10.0</commons-net.version>
     </properties>
 
     <profiles>
@@ -70,6 +72,22 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <!--Apache Commons Net 库。这个库提供了用于处理各种网络协议（包括FTP）的客户端实现-->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>${commons-net.version}</version>
         </dependency>
 
         <!-- mqtt -->

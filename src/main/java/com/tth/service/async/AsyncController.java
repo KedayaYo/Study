@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @Auther: Kedaya
@@ -25,9 +24,9 @@ public class AsyncController {
     @GetMapping("/sendMails")
     @SneakyThrows
     public String sendMails() {
-        String[] emails = new String[]{"a1@163.com","a2@163.com","a3@163.com","a4@163.com","a5@163.com"};
+        String[] emails = new String[]{"a1@163.com", "a2@163.com", "a3@163.com", "a4@163.com", "a5@163.com"};
         for (int i = 0; i < emails.length; i++) {
-            asyncService.sendMail(emails[i],"主题：这是一封异步测试邮件，直接返回");
+            asyncService.sendMail(emails[i], "主题：这是一封异步测试邮件，直接返回");
         }
         return "SUCCESS";
     }
@@ -48,7 +47,47 @@ public class AsyncController {
         StringBuffer out = new StringBuffer();
         for (int i = 0; i < futures.length; i++) {
             try {
-                out.append(futures[i].get()+"\n");
+                out.append(futures[i].get() + "\n");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return out.toString();
+    }
+
+    @GetMapping("/downloadFtpPhoto")
+    @SneakyThrows
+    public String downloadFtpPhoto() {
+        String[] filePaths = new String[]{
+                "/SITE1700017813710/A071704419032284726261/DJI_20240105094433_0005_W.JPG",
+                "/SITE1677049834894/photo/A071705046307055617130/DJI_20240112160106_0001_T_航点1.JPG",
+                "/SITE1677049834894/photo/A071705046307055617130/DJI_20240112160107_0001_V_航点1.JPG"};
+        for (int i = 0; i < filePaths.length; i++) {
+            asyncService.downloadFtpPhoto(filePaths[i].substring(filePaths[i].lastIndexOf("/") + 1), filePaths[i]);
+        }
+        return "SUCCESS";
+    }
+
+
+    @GetMapping("/blockDownloadFtpPhoto")
+    @SneakyThrows
+    public String blockDownloadFtpPhoto() {
+        CompletableFuture[] futures = new CompletableFuture[2];
+
+        String[] filePaths = new String[]{
+                "/SITE1677049834894/photo/A071705046307055617130/DJI_20240112160106_0001_T_航点1.JPG",
+                "/SITE1677049834894/photo/A071705046307055617130/DJI_20240112160107_0001_V_航点1.JPG"};
+        for (int i = 0; i < filePaths.length; i++) {
+            futures[i] = asyncService.blockDownloadFtpPhoto(filePaths[i].substring(filePaths[i].lastIndexOf("/") + 1), filePaths[i]);
+        }
+
+        // 等待所有异步任务执行完毕
+        CompletableFuture.allOf(futures);
+
+        StringBuffer out = new StringBuffer();
+        for (int i = 0; i < futures.length; i++) {
+            try {
+                out.append(futures[i].get() + "\n");
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

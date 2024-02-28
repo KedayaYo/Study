@@ -3,3 +3,11 @@ server:
 mqtt:
   endpoint: tcp://broker.emqx.io
   port: 1883
+
+# FTP 配置
+ftp:
+  host: test.skysys.cn
+  port: 20021
+  username: skysys
+  password: qiyun2021
+  baseurl: /

@@ -15,4 +15,8 @@ public interface AsyncService {
     void sendMail(String email, String msg);
 
     CompletableFuture blockSendMails(String email, String msg);
+
+    void downloadFtpPhoto(String fileName, String filePath);
+
+    CompletableFuture blockDownloadFtpPhoto(String fileName, String filePath);
 }
