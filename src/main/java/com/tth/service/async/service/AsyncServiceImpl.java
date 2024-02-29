@@ -56,6 +56,7 @@ public class AsyncServiceImpl implements AsyncService {
     public CompletableFuture blockSendMails(String email, String msg) {
         Thread.sleep(new Random().nextInt(3000));
         log.info("发送邮件给：{}，内容：{}", email, msg);
+        topicOperation.publish(MqttPushClient.client, msg, "email");
         return CompletableFuture.completedFuture("发送邮件给：" + email + "，内容：" + msg + "，发送成功");
     }
 
@@ -71,6 +72,7 @@ public class AsyncServiceImpl implements AsyncService {
     public void downloadFtpPhoto(String fileName, String filePath) {
         // 获取文件的字节
         byte[] bytes = ftpUtil.downloadFile(filePath);
+        topicOperation.publish(MqttPushClient.client, fileName, "ftp");
         log.info("{},下载完成", fileName);
     }
 
@@ -87,6 +89,8 @@ public class AsyncServiceImpl implements AsyncService {
     public CompletableFuture blockDownloadFtpPhoto(String fileName, String filePath) {
         // 获取文件的字节
         byte[] bytes = ftpUtil.downloadFile(filePath);
+        topicOperation.publish(MqttPushClient.client, fileName, "ftp");
+        log.info("{},下载完成", fileName);
         return CompletableFuture.completedFuture(fileName + ",下载完成!");
     }
 
