@@ -1,7 +1,5 @@
 package com.tth.service.async.service;
 
-import org.springframework.stereotype.Service;
-
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -19,4 +17,6 @@ public interface AsyncService {
     void downloadFtpPhoto(String fileName, String filePath);
 
     CompletableFuture blockDownloadFtpPhoto(String fileName, String filePath);
+
+    CompletableFuture blockCustomThreadDownloadFtpPhoto(String fileName, String filePath);
 }

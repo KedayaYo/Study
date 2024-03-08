@@ -5,8 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 /**
  * @Auther: Kedaya
@@ -25,7 +24,7 @@ public class AsyncConfiguration {
 
     // 自定义线程池
     @Bean(ASYNC_THEAD_POOL_1)
-    public Executor asyncTheadPool1(){
+    public Executor asyncTheadPool1() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         // 核心线程数，线程池创建的时候初始化的线程数
         executor.setCorePoolSize(10);
@@ -48,7 +47,7 @@ public class AsyncConfiguration {
     }
 
     @Bean(ASYNC_THEAD_POOL_2)
-    public Executor asyncTheadPool2(){
+    public Executor asyncTheadPool2() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         // 核心线程数，线程池创建的时候初始化的线程数
         executor.setCorePoolSize(10);
@@ -68,5 +67,12 @@ public class AsyncConfiguration {
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
         executor.initialize();
         return executor;
+    }
+
+    @Bean(value = "executorService")
+    public ExecutorService getExecutorService() {
+        return new ThreadPoolExecutor
+                (20, 20, 3600, TimeUnit.SECONDS,
+                        new ArrayBlockingQueue<>(2000));
     }
 }
