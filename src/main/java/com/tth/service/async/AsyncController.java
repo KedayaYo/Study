@@ -7,11 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
 
 /**
  * @Auther: Kedaya
@@ -24,8 +20,6 @@ import java.util.concurrent.ExecutorService;
 public class AsyncController {
     @Autowired
     private AsyncService asyncService;
-    @Autowired
-    private ExecutorService executorService;
 
     @GetMapping("/sendMails")
     @SneakyThrows
@@ -79,67 +73,21 @@ public class AsyncController {
     @SneakyThrows
     public String blockDownloadFtpPhoto() {
         CompletableFuture[] futures = new CompletableFuture[2];
-        // List<CompletableFuture> futures = new ArrayList<>();
+
         String[] filePaths = new String[]{
                 "/SITE1677049834894/photo/A071705046307055617130/DJI_20240112160106_0001_T_航点1.JPG",
                 "/SITE1677049834894/photo/A071705046307055617130/DJI_20240112160107_0001_V_航点1.JPG"};
         for (int i = 0; i < filePaths.length; i++) {
             futures[i] = asyncService.blockDownloadFtpPhoto(filePaths[i].substring(filePaths[i].lastIndexOf("/") + 1), filePaths[i]);
-            // CompletableFuture completableFuture = asyncService.blockDownloadFtpPhoto(filePaths[i].substring(filePaths[i].lastIndexOf("/") + 1), filePaths[i]);
-            // futures.add(completableFuture);
         }
 
         // 等待所有异步任务执行完毕
         CompletableFuture.allOf(futures);
-        // CompletableFuture.allOf((CompletableFuture<?>) futures);
 
         StringBuffer out = new StringBuffer();
         for (int i = 0; i < futures.length; i++) {
             try {
                 out.append(futures[i].get() + "\n");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return out.toString();
-    }
-
-
-    @GetMapping("/blockCustomThreadDownloadFtpPhoto")
-    @SneakyThrows
-    public String blockCustomThreadDownloadFtpPhoto() {
-        // 计数器
-        CountDownLatch latch = new CountDownLatch(2);
-        // 预期值
-        List<CompletableFuture> futures = new ArrayList<>();
-
-        String[] filePaths = new String[]{
-                "/SITE1677049834894/photo/A071705046307055617130/DJI_20240112160106_0001_T_航点1.JPG",
-                "/SITE1677049834894/photo/A071705046307055617130/DJI_20240112160107_0001_V_航点1.JPG"};
-        for (int i = 0; i < filePaths.length; i++) {
-            int finalI = i;
-            executorService.submit(() -> {
-                try {
-                    CompletableFuture completableFuture = asyncService.blockCustomThreadDownloadFtpPhoto(filePaths[finalI].substring(filePaths[finalI].lastIndexOf("/") + 1), filePaths[finalI]);
-                    futures.add(completableFuture);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                } finally {
-                    latch.countDown();
-                }
-            });
-        }
-
-        // 等待任务执行完毕
-        latch.await();
-
-        // 等待所有异步任务执行完毕
-        // CompletableFuture.allOf((CompletableFuture<?>) futures);
-
-        StringBuffer out = new StringBuffer();
-        for (int i = 0; i < futures.size(); i++) {
-            try {
-                out.append(futures.get(i).get() + "\n");
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

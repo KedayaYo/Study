@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
 
 /**
  * @Auther: Kedaya
@@ -27,7 +25,6 @@ public class AsyncServiceImpl implements AsyncService {
     private TopicOperation topicOperation;
     @Autowired
     private FTPUtil ftpUtil;
-
 
     /**
      * 功能描述:
@@ -97,17 +94,4 @@ public class AsyncServiceImpl implements AsyncService {
         return CompletableFuture.completedFuture(fileName + ",下载完成!");
     }
 
-    @SneakyThrows
-    @Override
-    public CompletableFuture blockCustomThreadDownloadFtpPhoto(String fileName, String filePath) {
-        try {
-            // 获取文件的字节
-            byte[] bytes = ftpUtil.downloadFile(filePath);
-            topicOperation.publish(MqttPushClient.client, fileName, "ftp");
-            log.info("{},下载完成", fileName);
-            return CompletableFuture.completedFuture(fileName + ",下载完成!");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

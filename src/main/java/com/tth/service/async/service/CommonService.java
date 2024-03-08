@@ -1,6 +1,12 @@
 package com.tth.service.async.service;
 
+import com.tth.service.async.test.exception.BusinessException;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Base64;
 
 /**
  * @Auther: Kedaya
@@ -10,5 +16,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CommonService {
+
 
 }
