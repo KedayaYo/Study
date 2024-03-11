@@ -1,6 +1,8 @@
 package com.tth.service.async;
 
 import com.tth.service.async.service.AsyncService;
+import com.tth.service.listener.EventPublisher;
+import com.tth.service.listener.event.AsyncMessageSendEvent;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import java.util.concurrent.CompletableFuture;
 public class AsyncController {
     @Autowired
     private AsyncService asyncService;
+    @Autowired
+    private EventPublisher eventPublisher;
 
     @GetMapping("/sendMails")
     @SneakyThrows
@@ -53,6 +57,14 @@ public class AsyncController {
             }
         }
         return out.toString();
+    }
+
+    @GetMapping("/listenerBlockSendMails")
+    @SneakyThrows
+    public String listenerBlockSendMails() {
+        AsyncMessageSendEvent asyncMessageSendEvent = new AsyncMessageSendEvent("asyncMessageSendEvent测试");
+        eventPublisher.publishEvent(asyncMessageSendEvent);
+        return "SUCCESS";
     }
 
     @GetMapping("/downloadFtpPhoto")
