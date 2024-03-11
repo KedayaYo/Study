@@ -1,4 +1,4 @@
-package com.tth.service.listener.interfaces;
+package com.tth.service.listener.annotation;
 
 import com.tth.service.listener.enums.EventTypeEnum;
 

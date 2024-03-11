@@ -2,8 +2,7 @@ package com.tth.service.listener;
 
 import com.tth.service.listener.enums.EventTypeEnum;
 import com.tth.service.listener.event.AsyncMessageSendEvent;
-import com.tth.service.listener.event.MessageSendEvent;
-import com.tth.service.listener.interfaces.EventType;
+import com.tth.service.listener.annotation.EventType;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
