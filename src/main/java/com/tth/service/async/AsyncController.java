@@ -3,6 +3,8 @@ package com.tth.service.async;
 import com.tth.service.async.service.AsyncService;
 import com.tth.service.listener.EventPublisher;
 import com.tth.service.listener.event.AsyncMessageSendEvent;
+import com.tth.service.pojo.Result;
+import com.tth.service.pojo.User;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +64,21 @@ public class AsyncController {
     @GetMapping("/listenerBlockSendMails")
     @SneakyThrows
     public String listenerBlockSendMails() {
-        AsyncMessageSendEvent asyncMessageSendEvent = new AsyncMessageSendEvent("asyncMessageSendEvent测试");
+        User user = User.builder()
+                .email("123456@163.com")
+                .name("天才可达鸭")
+                .password("123456")
+                .phone("12345678901")
+                .address("中国")
+                .commandParameters(User.CommandParameters.builder()
+                        .timestamp(System.currentTimeMillis())
+                        .data("这是一封异步测试邮件，等待结果返回")
+                        .build())
+                .build();
+        System.out.println("user = " + user);
+        Result<Object> result = Result.builder().code(200).message("SUCCESS").data(user).build();
+        System.out.println("result = " + result);
+        AsyncMessageSendEvent asyncMessageSendEvent = new AsyncMessageSendEvent(result);
         eventPublisher.publishEvent(asyncMessageSendEvent);
         return "SUCCESS";
     }

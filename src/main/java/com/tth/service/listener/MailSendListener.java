@@ -3,6 +3,7 @@ package com.tth.service.listener;
 import com.tth.service.listener.enums.EventTypeEnum;
 import com.tth.service.listener.event.AsyncMessageSendEvent;
 import com.tth.service.listener.annotation.EventType;
+import com.tth.service.pojo.Result;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,8 @@ public class MailSendListener implements ApplicationListener<AsyncMessageSendEve
     @EventType(value = EventTypeEnum.ASYNC)
     public void onApplicationEvent(AsyncMessageSendEvent event) {
         String dateStr = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        System.out.println(dateStr + ">>>>>>>>> MailSendListener>>>>>>>>>>>> " + event);
+        Result result = (Result) event.getSource();
+        System.out.println(dateStr + ">>>>>>>>> MailSendListener>>>>>>>>>>>> " + result);
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
